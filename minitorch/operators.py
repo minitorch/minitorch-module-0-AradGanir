@@ -1,6 +1,8 @@
 """Collection of the core mathematical operators used throughout the code base."""
 
 import math
+from typing import Callable, Iterable
+
 
 # ## Task 0.1
 
@@ -85,7 +87,7 @@ def max(x, y):
 
 
 def is_close(input, other):
-    """Takes input, other, and returns true if input is within .01 of other."""
+    """Takes input, other, and returns true if input is within .01 of others."""
     return abs(input - other) <= 1e-2
 
 
@@ -108,7 +110,7 @@ def log(x):
 
 
 def exp(x):
-    """Renames the math.exp function"""
+    """Renames the mathexp function"""
     return math.exp(x)
 
 
@@ -119,13 +121,10 @@ def inv(x):
 
 def log_back(a, b):
     """Returns the derivative of a function 'a', and multiplies by value of b"""
-    h = 1e-8
     return b * inv(a)
 
 
 def inv_back(a, b):
-    """Returns the derivative of inverse function, multiplies by b"""
-    h = 1e-8
     return -b * (inv(a) ** 2)
 
 
@@ -133,7 +132,6 @@ def relu_back(a, b):
     """Returns the value of the derivative of relu multiplied by b.
     If over 0, returns b otherwise returns 0
     """
-    h = 1e-8
     if a > 0:
         return b
     else:
@@ -156,32 +154,48 @@ def relu_back(a, b):
 # - prod: take the product of lists
 
 
-def map():
-    pass
-
-
-def zipWith():
-    pass
-
-
-def reduce():
-    pass
-
-
-def negList():
-    pass
-
-
-def addLists():
-    pass
-
-
-def sum():
-    pass
-
-
-def prod():
-    pass
-
-
 # TODO: Implement for Task 0.3.
+def map(fn: Callable[[float], float], a: Iterable[float]) -> Iterable[float]:
+    return [fn(i) for i in a]
+
+
+def zipWith(
+    fn: Callable[[float, float], float], a: Iterable[float], b: Iterable[float]
+) -> Iterable[float]:
+    return [fn(a, b) for a, b in zip(a, b)]
+
+
+def reduce(fn: Callable[[float, float], float], values: Iterable[float]) -> float:
+    result = values[0]
+    for value in values[1:]:
+        result = fn(result, value)
+    return result
+
+
+def negList(ls):
+    return map(neg, ls)
+
+
+def addLists(l1, l2):
+    if l1 is None or l2 is None:
+        return l1, l2
+    else:
+        return zipWith(add, l1, l2)
+
+
+def sum(x):
+    if not x:
+        return 0
+    elif len(x) == 1:
+        return x[0]
+    else:
+        return reduce(add, x)
+
+
+def prod(x):
+    if not x:
+        return 0
+    elif len(x) == 1:
+        return x[0]
+    else:
+        return reduce(mul, x)

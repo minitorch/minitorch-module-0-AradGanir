@@ -188,7 +188,14 @@ def test_sum_distribute(ls1: List[float], ls2: List[float]) -> None:
     is the same as the sum of each element of `ls1` plus each element of `ls2`.
     """
     # TODO: Implement for Task 0.3.
-    raise NotImplementedError("Need to implement for Task 0.3")
+    # raise NotImplementedError("Need to implement for Task 0.3")
+    """Test needs 3 stages.
+    since sum and add lists have already been tested to correct:
+    """
+    assert_close(
+        add(minitorch.operators.sum(ls1), minitorch.operators.sum(ls2)),
+        minitorch.operators.sum(addLists(ls1, ls2)),
+    )
 
 
 @pytest.mark.task0_3
